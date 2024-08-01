@@ -9,9 +9,28 @@
 
 # WORKDIR /work/
 # COPY /target/*.jar /work/application.jar
-FROM java:8  
-COPY . /var/www/java  
-WORKDIR /var/www/java  
-RUN javac Hello.java 
+# FROM java:8  
+# COPY . /var/www/java  
+# WORKDIR /var/www/java  
+# RUN javac Hello.java 
+# EXPOSE 8080
+# CMD ["java", "-jar", "application.jar"]
+
+FROM maven:3.8.7 AS build
+
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "application.jar"]
+
+ENTRYPOINT ["java","-Dspring.profiles.active=dev","-jar","/app.jar"]
+
+ 
