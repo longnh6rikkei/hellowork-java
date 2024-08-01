@@ -28,7 +28,7 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:17-jre-alpine
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /hello-world-java-docker/target/*.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java","-Dspring.profiles.active=dev","-jar","/app.jar"]
