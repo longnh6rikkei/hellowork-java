@@ -6,4 +6,4 @@ spring:
       - dev
       - dev-local
 server:
-  port: 8088
+  port: 8080
