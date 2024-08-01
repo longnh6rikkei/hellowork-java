@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: agh-cloud
+  profiles:
+    active:
+      - dev
+      - dev-local
+server:
+  port: 8088
