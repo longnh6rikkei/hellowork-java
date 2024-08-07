@@ -4,11 +4,11 @@ steps:
     args: ['clean', 'install', '-DskipTests']
   #https://cloud.google.com/build/docs/cloud-builders
   # Build the container image
-  - name: 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA', '.']
+  - name: 'us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry/$_SERVICE_NAME:$COMMIT_SHA', '.']
   # Push the container image to Container Registry
-  - name: 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA']
+  - name: 'us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry/$_SERVICE_NAME:$COMMIT_SHA']
   # Deploy container image to Cloud Run
   - name: 'us-central1-docker.pkg.dev/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
@@ -17,13 +17,13 @@ steps:
       - 'deploy'
       - '$_SERVICE_NAME'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry/$_SERVICE_NAME:$COMMIT_SHA'
       - '--region'
       - '$_DEPLOY_REGION'
 options:
   logging: CLOUD_LOGGING_ONLY
 
-images: [us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA]
+images: [us-central1-docker.pkg.dev/$PROJECT_ID/nbd-registry/$_SERVICE_NAME:$COMMIT_SHA]
 substitutions:
   _DEPLOY_REGION: us-central1
   _TRIGGER_ID: bab43ac9-1776-4806-98d6-e993150c1193
